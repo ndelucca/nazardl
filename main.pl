@@ -14,9 +14,17 @@ use Term::ANSIColor qw( colored );
 sub conf {
     return {
         word_length => 5,
-        max_attempts => 4,
-        eng_dict_file => '/usr/share/dict/words',
+        max_attempts => 6,
+        language => 'es_ES',
         cheat => 1,
+    };
+}
+
+sub dictionaries {
+    return {
+        en_US => '/usr/share/dict/american-english',
+        en_GB => '/usr/share/dict/british-english',
+        es_ES => '/usr/share/dict/spanish',
     };
 }
 
@@ -26,7 +34,10 @@ sub words {
 
     return @words if @words;
 
-    open( my $dict_fh, '<', conf->{eng_dict_file} );
+    my $lang = conf->{language};
+    my $dict = dictionaries->{$lang};
+
+    open( my $dict_fh, '<', $dict );
 
     while ( my $word = <$dict_fh>) {
         chomp $word;
